@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        #time {
+            font-size: 3rem;
+        }
+        #counter {
+            font-size: 3rem;
+        }
+        #counter-box {
+            height: 100px;
+            background-color: #e0f2f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .counter-value {
+            color: #004d40;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            border: 2px solid #004d40;
+            margin-right: 1rem;
+        }
+        .counter-button {
+            background-color: #28a745;
+            color: #fff;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+        .counter-button:hover {
+            background-color: #218838;
+        }
+        #increment-icon {
+            width: 42px;
+            height: 42px;
+        }
+    </style>
+</head>
+<body class="bg-gray-200 flex justify-center items-center h-screen m-0">
+    <div class="bg-white rounded-lg shadow-lg p-6 text-center w-80">
+        <!-- Counter Section -->
+        <div id="counter-box" class="mb-4">
+            <span id="counter" class="counter-value">0</span>
+            <button id="increment" onclick="incrementCounter()" class="counter-button">
+                <img id="increment-icon" src="https://img.icons8.com/ios-filled/50/000000/plus.png" alt="Increment"/>
+            </button>
+        </div>
+
+        <!-- Stopwatch Section -->
+        <div class="mb-4">
+            <div id="time" class="bg-black text-green-500 p-3 rounded-md">00:00:00</div>
+        </div>
+        <div>
+            <button id="start" onclick="startTimer()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-400">Start</button>
+            <button id="pause" onclick="togglePauseContinue()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-400 hidden">Pause</button>
+            <button id="continue" onclick="togglePauseContinue()" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-400 hidden">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        let timer;
+        let startTime;
+        let elapsedTime = 0;
+        let isRunning = false;
+        let counter = 0;
+
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hrs = Math.floor(totalSeconds / 3600);
+            const mins = Math.floor((totalSeconds % 3600) / 60);
+            const secs = totalSeconds % 60;
+            return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (!isRunning) {
+                startTime = Date.now() - elapsedTime;
+                timer = setInterval(() => {
+                    elapsedTime = Date.now() - startTime;
+                    document.getElementById('time').textContent = formatTime(elapsedTime);
+                }, 1000);
+                isRunning = true;
+                document.getElementById('start').classList.add('hidden');
+                document.getElementById('pause').classList.remove('hidden');
+            }
+        }
+
+        function togglePauseContinue() {
+            if (isRunning) {
+                clearInterval(timer);
+                isRunning = false;
+                document.getElementById('pause').classList.add('hidden');
+                document.getElementById('continue').classList.remove('hidden');
+            } else {
+                startTimer();
+                document.getElementById('pause').classList.remove('hidden');
+                document.getElementById('continue').classList.add('hidden');
+            }
+        }
+
+        function incrementCounter() {
+            counter++;
+            document.getElementById('counter').textContent = counter;
+        }
+    </script>
+</body>
+</html>
