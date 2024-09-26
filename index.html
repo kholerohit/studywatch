@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stopwatch</title>
+    <title>Stopwatch with Focus Counter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         #time {
@@ -48,10 +48,19 @@
             width: 42px;
             height: 42px;
         }
+        #focus-counter {
+            font-size: 2rem;
+            color: #b71c1c;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body class="bg-gray-200 flex justify-center items-center h-screen m-0">
     <div class="bg-white rounded-lg shadow-lg p-6 text-center w-80">
+        <!-- Focus Counter Section -->
+        <div id="focus-counter" class="mb-4">Focus Shift Counter: 0</div>
+
         <!-- Counter Section -->
         <div id="counter-box" class="mb-4">
             <span id="counter" class="counter-value">0</span>
@@ -77,6 +86,7 @@
         let elapsedTime = 0;
         let isRunning = false;
         let counter = 0;
+        let focusCounter = 0;
 
         function formatTime(ms) {
             const totalSeconds = Math.floor(ms / 1000);
@@ -116,6 +126,12 @@
             counter++;
             document.getElementById('counter').textContent = counter;
         }
+
+        // Focus shift event handling
+        window.onblur = () => {
+            focusCounter++;
+            document.getElementById('focus-counter').textContent = `Focus Shift Counter: ${focusCounter}`;
+        };
     </script>
 </body>
 </html>
